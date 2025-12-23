@@ -18,59 +18,6 @@ Whether you're debugging a new plant, stress‑testing zombie waves, or building
 
 ---
 
-## 📜 Scripting Engine
-
-CommandConsole includes a lightweight scripting language supporting:
-
-### ✔ Variables  
-```
-set row = 3
-set type = 1
-```
-
-### ✔ Loops  
-```
-repeat 5
-{
-    spawnzombie 1 3
-    wait 0.5
-}
-```
-
-### ✔ Conditionals  
-```
-if $row > 2
-{
-    spawnzombie 5 $row
-}
-```
-
-### ✔ Functions  
-```
-function summon()
-{
-    spawnzombie 2 3
-    wait 1
-}
-```
-
-### ✔ Built‑in commands  
-- `set`
-- `wait`
-- `return`
-- `break`
-- `continue`
-
-### ✔ Script execution  
-Run scripts directly:
-via command:
-
-```
-runscript myscript.txt
-```
-
----
-
 ## 🧩 Supported Mod Frameworks
 
 CommandConsole is designed to integrate cleanly with other PVZ Fusion modding systems:
@@ -132,6 +79,58 @@ CheatAPI.Register(
 );
 ```
 
+---
+
+## 📜 Scripting Engine
+
+CommandConsole includes a lightweight scripting language supporting:
+
+### ✔ Variables  
+```
+set row = 3
+set type = 1
+```
+
+### ✔ Loops  
+```
+repeat 5
+{
+    spawnzombie 1 3
+    wait 0.5
+}
+```
+
+### ✔ Conditionals  
+```
+if $row > 2
+{
+    spawnzombie 5 $row
+}
+```
+
+### ✔ Functions  
+```
+function summon()
+{
+    spawnzombie 2 3
+    wait 1
+}
+```
+
+### ✔ Built‑in commands  
+- `set`
+- `wait`
+- `return`
+- `break`
+- `continue`
+
+### ✔ Script execution  
+Run scripts directly:
+via command:
+
+```
+runscript myscript.txt
+```
 ---
 
 ## 🚀 Getting Started
