@@ -4,6 +4,7 @@ using Il2CppInterop.Runtime.Injection;
 using MelonLoader;
 using System.Collections.Generic;
 using UnityEngine;
+using static Il2Cpp.HorseBoss;
 
 namespace CheatConsole
 {
@@ -168,13 +169,18 @@ namespace CheatConsole
                 "cheatmode",
                 "Enables/Disables developer mode (Instant CD, Unlimited Sun & Coins, Nyan Squash spawns Spicy Squashes)."
             },
+            { "kill", "Summons an Inferno Meteor to decimate the lawn, or plants, zombies if specified" },
             { "clearplant", "Removes all plants from the lawn." },
             { "clearzombie", "Removes all zombies from the lawn." },
             { "irwinner", "Instantly wins the current level." },
             { "moresun", "Gains 5,000 Sun." },
             { "mysmoney", "Gains $1,000,000 for Harvest Mode." },
-            { "givecard", "Spawns a random Seed Packet." },
-            { "bigcannon", "Enables/Disables a Wall-nut Turret. Left Click to shoot." }
+            { "givecard", "Spawns a random Seed Packet for Harvest Mode" },
+            { "bigcannon", "Enables/Disables a Wall-nut Turret. Left Click to shoot." },
+            { "upup", "Instantly levels-up your Chibi Mini-bosses." },
+            { "debug", "Enables/Disables debug mode" },
+            { "reload", "Reloads all Fusion Showcase levels." },
+            { "report", "Exports the current level's statistics."}
         };
     }
 
@@ -560,7 +566,7 @@ namespace CheatConsole
         private static void RunKill(string[] args)
         {
             // Behavior:
-            // kill           -> clearzombie
+            // kill           -> summon meteor
             // kill all       -> clearplant + clearzombie
             // kill plant(s)  -> clearplant
             // kill zombie(s) -> clearzombie
@@ -578,9 +584,11 @@ namespace CheatConsole
 
             Il2CppSystem.Action clearPlant;
             Il2CppSystem.Action clearZombie;
+            Il2CppSystem.Action kill;
 
             cheatKey.CheatKeys.TryGetValue("clearplant", out clearPlant);
             cheatKey.CheatKeys.TryGetValue("clearzombie", out clearZombie);
+            cheatKey.CheatKeys.TryGetValue("kill", out kill);
 
             if (mode == "all")
             {
@@ -607,15 +615,12 @@ namespace CheatConsole
                 return;
             }
 
-            if (mode == "zombie" || mode == "zombies" || mode == "")
+            if (mode == "zombie" || mode == "zombies")
             {
                 if (clearZombie != null)
                 {
                     clearZombie.Invoke();
-                    if (mode == "")
-                        CheatConsoleLog.Info("Killed all zombies (kill)");
-                    else
-                        CheatConsoleLog.Info("Killed all zombies");
+                    CheatConsoleLog.Info("Killed all zombies");
                 }
                 else
                 {
@@ -624,12 +629,16 @@ namespace CheatConsole
                 return;
             }
 
-            CheatConsoleLog.Warn("Usage: kill [plant|plants|zombie|zombies|all]");
+            if (mode == "")
+            {
+                kill.Invoke();
+                CheatConsoleLog.Info("Summoned an Inferno Meteor");
+            }
         }
     }
 
     // ---------------------------------------------------------
-    // PATCH: Disable CheatKey unless console is open
+    // PATCH: Disable CheatKey
     // ---------------------------------------------------------
     [HarmonyPatch(typeof(Il2Cpp.CheatKey), "CheckCheatCodes")]
     public static class Patch_CheatKey_CheckCheatCodes_Gate
